@@ -17,12 +17,20 @@ type Action<TData> =
   | { type: "FETCH_SUCCESS"; payload: TData }
   | { type: "FETCH_ERROR" };
 
-const reducer = <TData>() => (state: State<TData>, action: Action<TData>) => {
+const reducer = <TData>() => (
+  state: State<TData>,
+  action: Action<TData>
+) => {
   switch (action.type) {
     case "FETCH":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, data: action.payload, loading: false, error: false };
+      return {
+        ...state,
+        data: action.payload,
+        loading: false,
+        error: false
+      };
     case "FETCH_ERROR":
       return { ...state, loading: false, error: true };
     default:
@@ -44,7 +52,10 @@ export const useMutation = <TData, TVariables = {}>(
     try {
       dispatch({ type: "FETCH" });
 
-      const { data, errors } = await server.fetch<TData, TVariables>({
+      const { data, errors } = await server.fetch<
+        TData,
+        TVariables
+      >({
         query,
         variables
       });
